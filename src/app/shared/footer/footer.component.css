@@ -1,5 +1,320 @@
-.footer{border-top:1px solid var(--border);background:var(--bg-elev);color:var(--text-dim)}
-.container{max-width:1100px;margin:0 auto;padding:16px;display:flex;gap:12px;align-items:center;justify-content:space-between}
-.right{display:flex;gap:14px}
-.right a{color:var(--text-dim);text-decoration:none}
-.right a:hover{color:var(--text)}
+/* Modern Footer Component CSS */
+
+.footer {
+  background: rgba(15, 15, 35, 0.95);
+  backdrop-filter: blur(20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  position: relative;
+  margin-top: auto;
+  z-index: 100;
+}
+
+/* Subtle gradient overlay */
+.footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(120, 119, 198, 0.05) 0%, 
+    rgba(255, 103, 155, 0.03) 50%, 
+    rgba(79, 172, 254, 0.05) 100%
+  );
+  pointer-events: none;
+}
+
+/* Top accent line */
+.footer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(120, 119, 198, 0.5) 20%, 
+    rgba(255, 103, 155, 0.5) 50%, 
+    rgba(79, 172, 254, 0.5) 80%, 
+    transparent
+  );
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  gap: 2rem;
+}
+
+/* Left side - Name and info */
+.left {
+  font-size: 0.95rem;
+  color: #a0a9c0;
+  line-height: 1.5;
+}
+
+.left strong {
+  background: linear-gradient(135deg, #ffffff 0%, #e0e6ed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+  margin-right: 0.25rem;
+}
+
+/* Right side - Social links */
+.right {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.right a {
+  color: #a0a9c0;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+
+/* Shimmer effect */
+.right a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.1), 
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.right a:hover::before {
+  left: 100%;
+}
+
+/* Individual link styling */
+.right a:nth-child(1) { /* GitHub */
+  --accent-color: #7877c6;
+}
+
+.right a:nth-child(2) { /* LinkedIn */
+  --accent-color: #ff679b;
+}
+
+.right a:nth-child(3) { /* Download CV */
+  --accent-color: #4facfe;
+}
+
+.right a:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Special styling for download link */
+.right a[download] {
+  background: linear-gradient(135deg, #ff679b 0%, #7877c6 100%);
+  color: #ffffff !important;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 3px 12px rgba(120, 119, 198, 0.3);
+  position: relative;
+}
+
+.right a[download]::after {
+  content: '↓';
+  margin-left: 0.5rem;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.right a[download]:hover {
+  background: linear-gradient(135deg, #ff679b 10%, #7877c6 90%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(120, 119, 198, 0.4);
+}
+
+.right a[download]:hover::after {
+  transform: translateY(2px);
+}
+
+.right a[download]:hover::before {
+  display: none; /* Remove shimmer for download button */
+}
+
+/* External link icons */
+.right a[target="_blank"]::after {
+  content: '↗';
+  margin-left: 0.4rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.right a[target="_blank"]:hover::after {
+  opacity: 1;
+  transform: translate(1px, -1px);
+}
+
+/* Tablet and mobile adjustments */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+  
+  .right {
+    gap: 1.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .left {
+    font-size: 0.9rem;
+  }
+  
+  .right a {
+    font-size: 0.85rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 1.25rem 1rem;
+  }
+  
+  .right {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .right a {
+    width: 100%;
+    text-align: center;
+    padding: 0.8rem;
+  }
+  
+  .left {
+    font-size: 0.85rem;
+  }
+  
+  .footer::after {
+    left: 10%;
+    right: 10%;
+  }
+}
+
+/* Light theme support */
+:host-context(.light-theme) .footer {
+  background: rgba(255, 255, 255, 0.95);
+  border-top-color: rgba(0, 0, 0, 0.1);
+  color: #1a1a2e;
+}
+
+:host-context(.light-theme) .footer::before {
+  background: linear-gradient(135deg, 
+    rgba(120, 119, 198, 0.03) 0%, 
+    rgba(255, 103, 155, 0.02) 50%, 
+    rgba(79, 172, 254, 0.03) 100%
+  );
+}
+
+:host-context(.light-theme) .footer::after {
+  background: linear-gradient(90deg, 
+    transparent, 
+    rgba(120, 119, 198, 0.3) 20%, 
+    rgba(255, 103, 155, 0.3) 50%, 
+    rgba(79, 172, 254, 0.3) 80%, 
+    transparent
+  );
+}
+
+:host-context(.light-theme) .left {
+  color: #64748b;
+}
+
+:host-context(.light-theme) .left strong {
+  background: linear-gradient(135deg, #1a1a2e 0%, #475569 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+:host-context(.light-theme) .right a {
+  color: #64748b;
+}
+
+:host-context(.light-theme) .right a:hover {
+  color: #1a1a2e;
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+:host-context(.light-theme) .right a[download] {
+  background: linear-gradient(135deg, #ff679b 0%, #7877c6 100%);
+  color: #ffffff !important;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Focus styles */
+.right a:focus {
+  outline: 2px solid #7877c6;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  .footer {
+    background: none;
+    border-top: 1px solid #ccc;
+    color: #000;
+  }
+  
+  .footer::before,
+  .footer::after {
+    display: none;
+  }
+  
+  .right a {
+    color: #000;
+  }
+  
+  .right a[download] {
+    background: none;
+    color: #000 !important;
+  }
+}
