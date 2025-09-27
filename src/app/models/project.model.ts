@@ -1,4 +1,6 @@
+// project.model.ts
 export type Category = 'Angular' | 'PHP' | 'Full-stack' | 'Other';
+
 export interface Project {
   id: string;
   title: string;
@@ -7,5 +9,5 @@ export interface Project {
   category: Category;
   githubUrl: string;
   liveUrl: string;
-  image: string;
+  image?: string;
 }
