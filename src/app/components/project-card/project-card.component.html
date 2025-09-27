@@ -1,0 +1,14 @@
+<article class="card" tabindex="0" [attr.aria-labelledby]="project.id + '-title'">
+  <div class="thumb" (click)="preview.emit(project.image)" role="button" tabindex="0" [attr.aria-label]="'Open preview'">
+    <img [src]="project.image" [alt]="project.title + ' thumbnail'" />
+  </div>
+  <div class="body">
+    <h3 id="{{project.id}}-title">{{project.title}}</h3>
+    <p class="desc">{{project.description}}</p>
+    <ul class="tech"><li *ngFor="let t of project.technologies">{{t}}</li></ul>
+    <div class="links">
+      <a [href]="project.githubUrl" target="_blank" rel="noopener">GitHub</a>
+      <a [href]="project.liveUrl" target="_blank" rel="noopener" class="primary">Live Demo</a>
+    </div>
+  </div>
+</article>

@@ -1,0 +1,11 @@
+<section class="wrap">
+  <h1>Projects</h1>
+  <div class="filters" role="tablist" aria-label="Filter projects">
+    <button *ngFor="let c of categories" [class.active]="selected()===c" (click)="selected.set(c)" role="tab" [attr.aria-selected]="selected()===c">{{c}}</button>
+  </div>
+  <div class="grid" @listStagger>
+    <app-project-card *ngFor="let p of projects; let i = index" [project]="p" (preview)="previewSrc.set($event)" @fadeInUp appReveal [revealDelay]="i*80"></app-project-card>
+  </div>
+
+  <app-lightbox *ngIf="previewSrc()" [src]="previewSrc()!" [alt]="'Preview ' + previewSrc()" (closed)="previewSrc.set(undefined)"></app-lightbox>
+</section>

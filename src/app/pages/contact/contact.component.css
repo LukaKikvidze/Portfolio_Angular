@@ -1,0 +1,9 @@
+.wrap{max-width:1000px;margin:0 auto;padding:24px 16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+form{display:grid;gap:12px}
+label{display:grid;gap:6px}
+input,textarea{border:1px solid var(--border);background:var(--bg-elev);color:var(--text);padding:10px;border-radius:10px}
+.ok{color:var(--ok)}.err{color:var(--danger)}
+.info ul{margin:0;padding-left:18px}
+.note{margin-top:12px;padding:12px;border:1px dashed var(--border);border-radius:8px;color:var(--text-dim)}
+@media(max-width: 900px){.grid{grid-template-columns:1fr}}

@@ -1,0 +1,4 @@
+.wrap{max-width:900px;margin:0 auto;padding:32px 16px}
+.wrap h1{font-size:32px;margin:0 0 10px}
+.tags{display:flex;flex-wrap:wrap;gap:10px;margin:10px 0 18px;padding:0}
+.tags li{list-style:none;border:1px solid var(--border);padding:6px 10px;border-radius:999px;background:var(--bg-elev)}

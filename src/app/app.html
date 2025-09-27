@@ -1,0 +1,7 @@
+<div class="app-container">
+  <app-navbar></app-navbar>
+  <main id="main" class="main" tabindex="-1" aria-live="polite" [@routeAnimations]="o.activatedRouteData['animation']">
+    <router-outlet #o="outlet"></router-outlet>
+  </main>
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,6 @@
+<div class="overlay" role="dialog" aria-modal="true" (click)="closed.emit()">
+  <div class="box" (click)="$event.stopPropagation()">
+    <button class="close" aria-label="Close" (click)="closed.emit()">×</button>
+    <img [src]="src" [alt]="alt"/>
+  </div>
+</div>

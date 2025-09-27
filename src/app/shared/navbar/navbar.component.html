@@ -1,0 +1,16 @@
+<header class="nav" role="banner">
+  <div class="container">
+    <a class="brand" routerLink="/" aria-label="Luka Kikvidze Home">Luka<span>Kikvidze</span></a>
+    <button class="menu-btn" (click)="toggleMenu()" [attr.aria-expanded]="mobileOpen()" aria-controls="primary-nav" aria-label="Toggle navigation">
+      <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+    </button>
+    <nav id="primary-nav" class="links" [class.open]="mobileOpen()" role="navigation" aria-label="Primary">
+      <a routerLink="/" routerLinkActive="active" (click)="mobileOpen.set(false)">Home</a>
+      <a routerLink="/about" routerLinkActive="active" (click)="mobileOpen.set(false)">About</a>
+      <a routerLink="/projects" routerLinkActive="active" (click)="mobileOpen.set(false)">Projects</a>
+      <a routerLink="/skills" routerLinkActive="active" (click)="mobileOpen.set(false)">Skills</a>
+      <a routerLink="/contact" routerLinkActive="active" (click)="mobileOpen.set(false)">Contact</a>
+      <button class="theme" (click)="theme.toggle()" aria-label="Toggle dark mode">{{ theme.theme() === 'dark' ? 'Light' : 'Dark' }} Mode</button>
+    </nav>
+  </div>
+</header>
