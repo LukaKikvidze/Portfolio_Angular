@@ -1,118 +1,235 @@
-<section class="projects-wrapper container">
-
+<section class="projects-wrapper" (keydown)="onKeyboardShortcut($event)">
   <!-- Hero Section -->
   <div class="hero-section">
-    <h1>Projects</h1>
-    <p class="hero-subtitle">Here are some of my most exciting projects, showcasing modern web development with Angular.</p>
-
-    <!-- Stats Example -->
-    <div class="stats">
-      <div class="stat-item">
-        <span class="stat-number">{{filteredProjects.length}}</span>
-        <span class="stat-label">Total Projects</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">5</span>
-        <span class="stat-label">Featured</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-number">3</span>
-        <span class="stat-label">In Progress</span>
+    <div class="container">
+      <h1 appReveal>My Projects</h1>
+      <p class="hero-subtitle" appReveal revealDelay="100ms">
+        A collection of applications and experiments showcasing modern web technologies, 
+        clean architecture, and thoughtful user experiences.
+      </p>
+      
+      <!-- Stats -->
+      <div class="stats" appReveal revealDelay="200ms">
+        <div class="stat-item">
+          <span class="stat-number">{{ filteredProjects().length }}</span>
+          <span class="stat-label">Projects</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ categories().length - 1 }}</span>
+          <span class="stat-label">Technologies</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ featuredProjects().length }}</span>
+          <span class="stat-label">Featured</span>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Controls Section -->
   <div class="controls-section">
-    <!-- Search -->
-    <div class="search-container">
-      <div class="search-wrapper">
-        <input
-          class="search-input"
-          type="text"
-          placeholder="Search projects..."
-          [ngModel]="searchText"
-          (ngModelChange)="onSearch($event)"
-        />
-        <span class="search-icon">🔍</span>
-        <span *ngIf="searchText" class="search-clear" (click)="onSearch('')">×</span>
-        <span class="search-hint">Type to filter projects</span>
+    <div class="container">
+      
+      <div class="search-container" appReveal revealDelay="300ms">
+        <div class="search-wrapper">
+          <input 
+            type="text" 
+            id="project-search"
+            class="search-input"
+            placeholder="Search projects, technologies..."
+            [value]="searchQuery()"
+            (input)="onSearchInput($event)"
+            autocomplete="off"
+          >
+          <button 
+            class="search-clear"
+            *ngIf="searchQuery()"
+            (click)="onClearSearch()"
+            aria-label="Clear search"
+          >
+            ✕
+          </button>
+          <div class="search-icon">🔍</div>
+        </div>
+        <small class="search-hint">Press Ctrl+K to focus search</small>
       </div>
-    </div>
 
-    <!-- Category Filters -->
-    <div class="filters-container">
-      <div class="category-filters" role="tablist" aria-label="Filter projects">
-        <button
-          *ngFor="let c of categories"
-          class="filter-btn"
-          [class.active]="selected() === c"
-          (click)="selected.set(c)"
-          role="tab"
-          [attr.aria-selected]="selected() === c"
+      <!-- Category Filters -->
+      <div class="filters-container" appReveal revealDelay="400ms">
+        <div class="category-filters">
+          <button 
+            *ngFor="let category of categories(); let i = index"
+            class="filter-btn"
+            [class.active]="selectedCategory() === category.id"
+            (click)="onCategoryChange(category.id)"
+            [attr.aria-pressed]="selectedCategory() === category.id"
+            appReveal 
+            [revealDelay]="(i * 50) + 'ms'"
+          >
+            <span class="filter-icon">{{ getCategoryIcon(category.id) }}</span>
+            <span class="filter-text">{{ category.name }}</span>
+            <span class="filter-count">{{ category.count }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- View Controls -->
+      <div class="view-controls" appReveal revealDelay="500ms">
+        <div class="view-modes">
+          <button 
+            class="view-btn"
+            [class.active]="viewMode() === 'grid'"
+            (click)="onViewModeChange('grid')"
+            aria-label="Grid view"
+          >
+            <span class="view-icon">⊞</span>
+          </button>
+          <button 
+            class="view-btn"
+            [class.active]="viewMode() === 'list'"
+            (click)="onViewModeChange('list')"
+            aria-label="List view"
+          >
+            <span class="view-icon">☰</span>
+          </button>
+        </div>
+        
+        <button 
+          class="export-btn"
+          (click)="exportProjectList()"
+          title="Export project list as JSON"
         >
-          <span class="filter-text">{{c}}</span>
-          <span class="filter-count">{{getCategoryCount(c)}}</span>
+          <span class="export-icon">📥</span>
+          Export
         </button>
       </div>
     </div>
-
-    <!-- View Controls -->
-    <div class="view-controls">
-      <div class="view-modes">
-        <button class="view-btn" [class.active]="viewMode==='grid'" (click)="viewMode='grid'">Grid</button>
-        <button class="view-btn" [class.active]="viewMode==='list'" (click)="viewMode='list'">List</button>
-      </div>
-      <button class="export-btn" (click)="exportProjects()">
-        <span class="export-icon">📤</span> Export
-      </button>
-    </div>
   </div>
 
-  <!-- Projects Section -->
-  <div class="projects-section">
-    <div class="section-header">
-      <div class="results-count">{{filteredProjects.length}} Results</div>
-      <div class="active-filters">
-        <span *ngFor="let f of activeFilters" class="active-filter">
-          {{f}} <button (click)="removeFilter(f)">×</button>
-        </span>
-      </div>
-    </div>
+  <!-- Loading State -->
+  <div class="loading-container" *ngIf="isLoading()">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading amazing projects...</p>
+  </div>
 
-    <!-- Projects Container -->
-    <div class="projects-container" [ngClass]="{'grid-view': viewMode==='grid', 'list-view': viewMode==='list'}">
-      <app-project-card
-        *ngFor="let p of filteredProjects; let i = index"
-        [project]="p"
-        (preview)="previewSrc.set($event)"
-        @fadeInUp
-        appReveal
-        [revealDelay]="i*80"
-      ></app-project-card>
-    </div>
-
-    <!-- Empty State -->
-    <div *ngIf="!filteredProjects.length" class="empty-state">
-      <span class="empty-icon">📂</span>
-      <h2 class="empty-title">No Projects Found</h2>
-      <p class="empty-description">Try adjusting your filters or search terms to find projects.</p>
-      <div class="empty-actions">
-        <button class="empty-btn" (click)="resetFilters()">Reset Filters</button>
-        <button class="empty-btn primary" (click)="addProject()">Add Project</button>
+  <!-- Featured Projects -->
+  <div class="featured-section" *ngIf="!isLoading() && featuredProjects().length > 0 && selectedCategory() === 'All'">
+    <div class="container">
+      <h2 class="section-title" appReveal>Featured Work</h2>
+      <div class="featured-grid">
+        <div 
+          *ngFor="let project of featuredProjects(); let i = index"
+          class="featured-card"
+          appReveal 
+          [revealDelay]="(i * 100) + 'ms'"
+          (click)="onProjectClick(project)"
+        >
+          <app-project-card 
+            [project]="project"
+            (previewImage)="onProjectPreview($event)"
+            (demoClick)="onProjectLink(project, 'demo')"
+            (githubClick)="onProjectLink(project, 'github')"
+          ></app-project-card>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Lightbox -->
-  <app-lightbox
-    *ngIf="previewSrc()"
-    [src]="previewSrc()!"
-    [alt]="'Preview ' + previewSrc()"
-    (closed)="previewSrc.set(undefined)"
-  ></app-lightbox>
+  <!-- All Projects -->
+  <div class="projects-section" *ngIf="!isLoading()">
+    <div class="container">
+      
+      <!-- Section Header -->
+      <div class="section-header">
+        <h2 class="section-title" appReveal>
+          {{ selectedCategory() === 'All' ? 'All Projects' : selectedCategory() + ' Projects' }}
+          <span class="results-count">({{ filteredProjects().length }})</span>
+        </h2>
+        
+        <!-- Active Filters -->
+        <div class="active-filters" *ngIf="searchQuery() || selectedCategory() !== 'All'">
+          <span class="filter-label">Filtered by:</span>
+          <span class="active-filter" *ngIf="selectedCategory() !== 'All'">
+            {{ selectedCategory() }}
+            <button (click)="onCategoryChange('All')" aria-label="Remove category filter">×</button>
+          </span>
+          <span class="active-filter" *ngIf="searchQuery()">
+            "{{ searchQuery() }}"
+            <button (click)="onClearSearch()" aria-label="Clear search">×</button>
+          </span>
+        </div>
+      </div>
+
+      <!-- Projects Grid/List -->
+      <div 
+        class="projects-container"
+        [class.grid-view]="viewMode() === 'grid'"
+        [class.list-view]="viewMode() === 'list'"
+        [@listStagger]="filteredProjects()"
+      >
+        <div 
+          *ngFor="let project of filteredProjects(); let i = index"
+          class="project-item"
+          [attr.data-index]="i"
+          appReveal 
+          [revealDelay]="(i * 80) + 'ms'"
+          (click)="onProjectClick(project)"
+        >
+          <app-project-card 
+            [project]="project"
+            (previewImage)="onProjectPreview($event)"
+            (demoClick)="onProjectLink(project, 'demo')"
+            (githubClick)="onProjectLink(project, 'github')"
+          ></app-project-card>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="hasResults() === false" appReveal>
+        <div class="empty-icon">🔍</div>
+        <h3 class="empty-title">No projects found</h3>
+        <p class="empty-description">
+          <span *ngIf="searchQuery()">
+            No projects match "<strong>{{ searchQuery() }}</strong>".
+          </span>
+          <span *ngIf="!searchQuery() && selectedCategory() !== 'All'">
+            No projects found in the "<strong>{{ selectedCategory() }}</strong>" category.
+          </span>
+        </p>
+        <div class="empty-actions">
+          <button 
+            class="empty-btn primary"
+            (click)="onClearSearch(); onCategoryChange('All')"
+            *ngIf="searchQuery() || selectedCategory() !== 'All'"
+          >
+            Clear filters
+          </button>
+          <button 
+            class="empty-btn"
+            (click)="onCategoryChange('All')"
+            *ngIf="selectedCategory() !== 'All'"
+          >
+            View all projects
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Back to Top -->
-  <button class="back-to-top" (click)="scrollToTop()" [class.visible]="showBackToTop">↑</button>
+  <button 
+    class="back-to-top"
+    (click)="scrollToTop()"
+    [class.visible]="showBackToTop()"
+    aria-label="Back to top"
+  >
+    ↑
+  </button>
 
+  <!-- Lightbox -->
+  <app-lightbox 
+    *ngIf="previewSrc()"
+    [src]="previewSrc()!"
+    (close)="onCloseLightbox()"
+  ></app-lightbox>
 </section>

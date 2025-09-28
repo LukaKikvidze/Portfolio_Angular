@@ -569,7 +569,7 @@ h1::after {
   transform: scale(1.1);
 }
 
-/* Projects Container */
+/* Projects Container - Remove problematic animations */
 .projects-container {
   display: grid;
   gap: 2rem;
@@ -585,12 +585,20 @@ h1::after {
 }
 
 .project-item {
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
   cursor: pointer;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 .project-item:hover {
   transform: translateY(-4px);
+}
+
+/* Remove problematic list stagger animation */
+.projects-container[data-animation="listStagger"] .project-item {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 /* Empty State */
@@ -931,4 +939,51 @@ h1::after {
 .back-to-top:focus {
   outline: 2px solid #7877c6;
   outline-offset: 2px;
+}
+
+
+/* Fix for appReveal directive hiding elements on scroll */
+
+/* Override reveal directive initial state */
+[appReveal] {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: opacity 0.6s ease, transform 0.6s ease !important;
+}
+
+/* Ensure revealed elements stay visible */
+[appReveal].revealed,
+[appReveal].ng-animating,
+[appReveal]:not(.ng-hide) {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Override any hiding classes that might be applied */
+.projects-section [appReveal],
+.featured-section [appReveal],
+.controls-section [appReveal] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) !important;
+}
+
+/* Specific fixes for project items */
+.project-item,
+.featured-card {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  transition: transform 0.3s ease !important;
+}
+
+/* Prevent intersection observer from hiding elements */
+.projects-container .project-item[appReveal] {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Fix for filter buttons */
+.filter-btn[appReveal] {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
