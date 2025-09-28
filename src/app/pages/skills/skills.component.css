@@ -42,28 +42,38 @@
 }
 
 /* Typography */
+/* Modern Typography for H1 */
 h1 {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 700;
-  margin-bottom: 3rem;
+  font-size: clamp(2.5rem, 5vw, 3.8rem);
+  font-weight: 800;
   text-align: center;
-  background: linear-gradient(135deg, #ffffff 0%, #e0e6ed 100%);
+  margin-bottom: 2.5rem;
+  background: linear-gradient(135deg, #ff679b, #7877c6, #4facfe);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
   position: relative;
+  letter-spacing: 1px;
+  line-height: 1.2;
+  transition: all 0.3s ease;
 }
 
+/* Gradient underline */
 h1::after {
   content: '';
   position: absolute;
-  bottom: -10px;
+  bottom: -12px;
   left: 50%;
-  width: 80px;
-  height: 3px;
-  background: linear-gradient(135deg, #ff679b 0%, #7877c6 100%);
+  width: 100px;
+  height: 4px;
+  background: linear-gradient(90deg, #ff679b, #7877c6, #4facfe);
   border-radius: 2px;
   transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+/* Hover effect (optional) */
+h1:hover::after {
+  width: 120px;
 }
 
 /* Skills List */
@@ -94,7 +104,7 @@ h1::after {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, 
+    background: linear-gradient(90deg, 
     #ff679b 0%, 
     #7877c6 33%, 
     #4facfe 66%, 
@@ -131,6 +141,7 @@ h1::after {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.5rem;
+
 }
 
 .name {
@@ -402,4 +413,121 @@ h1::after {
 .list li:focus-within {
   outline: 2px solid #7877c6;
   outline-offset: 2px;
+}
+
+
+:host {
+  display: block;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #0f0f1f, #151530);
+  color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.wrap {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: #fff;
+  position: relative;
+  display: inline-block;
+  padding: 0.3rem 1rem;
+  background: #1446a0;
+  border-radius: 6px;
+}
+
+h1::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #ff5f6d, #845ec2);
+  transform: translateX(-50%);
+  border-radius: 3px;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list li {
+  color: #222;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.list li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .6rem;
+}
+
+.name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.pct {
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  text-transform: uppercase;
+}
+
+.pct.expert {
+  background: #ff4b2b;
+  color: #fff;
+}
+.pct.advanced {
+  background: #ffb347;
+  color: #222;
+}
+.pct.proficient {
+  background: #4facfe;
+  color: #fff;
+}
+.pct.intermediate {
+  background: #43e97b;
+  color: #222;
+}
+.pct.beginner {
+  background: #999;
+  color: #fff;
+}
+
+.bar {
+  width: 100%;
+  height: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 10px;
+  transition: width 1.2s ease-in-out;
 }

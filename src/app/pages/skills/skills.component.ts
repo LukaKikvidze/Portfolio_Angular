@@ -1,33 +1,39 @@
 import { Component } from '@angular/core';
-import { NgFor } from '@angular/common';
-import { SeoService } from '../../services/seo.service';
-import { fadeInUp } from '../../shared/animations';
-import { RevealDirective } from '../../shared/reveal.directive';
+import { NgFor, NgClass } from '@angular/common';
 
-interface Skill { name: string; level: number; }
+interface Skill {
+  name: string;
+  level: number;
+}
 
 @Component({
   selector: 'app-skills',
   standalone: true,
-  imports: [NgFor, RevealDirective],
+  imports: [NgFor, NgClass],
   templateUrl: './skills.component.html',
-  styleUrl: './skills.component.css',
-  animations: [fadeInUp]
+  styleUrls: ['./skills.component.css']
 })
 export class SkillsComponent {
+
   skills: Skill[] = [
     { name: 'Angular', level: 90 },
-    { name: 'HTML', level: 95 },
-    { name: 'CSS', level: 90 },
-    { name: 'JavaScript', level: 90 },
-    { name: 'SQL', level: 70 },
-    { name: 'Python', level: 75 },
-    { name: 'Django', level: 65 },
-    { name: 'C++', level: 60 },
+    { name: 'TypeScript', level: 85 },
+    { name: 'JavaScript', level: 80 },
     { name: 'PHP', level: 70 },
-    { name: 'Git', level: 85 }
+    { name: 'MySQL', level: 75 },
+    { name: 'CSS', level: 75 },
+    { name: 'HTML', level: 95 }
   ];
-  constructor(private seo: SeoService){
-    this.seo.setMeta({ title: 'Skills | Luka Kikvidze', description: 'Technical skills: Angular, HTML, CSS, JavaScript, SQL, Python, Django, C++, PHP, Git.'});
+
+  getBadgeClass(level: number): string {
+    if (level >= 90) return 'expert';
+    if (level >= 80) return 'advanced';
+    if (level >= 70) return 'proficient';
+    if (level >= 60) return 'intermediate';
+    return 'beginner';
+  }
+
+  trackBySkill(index: number, skill: Skill): string | number {
+    return skill.name || index;
   }
 }
