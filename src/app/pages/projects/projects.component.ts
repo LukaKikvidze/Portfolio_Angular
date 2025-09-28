@@ -65,7 +65,7 @@ export class ProjectsComponent implements OnInit {
       { id: 'All', name: 'All Projects', count: projects.length }
     ];
     
-    ['Angular', 'React', 'Vue', 'PHP', 'Node.js', 'Full-stack', 'Mobile', 'Other'].forEach(cat => {
+    ['Angular', 'React', 'PHP', 'Node.js', 'Full-stack', 'Mobile', 'Other'].forEach(cat => {
       const count = categoryMap.get(cat) || 0;
       if (count > 0) {
         cats.push({ id: cat, name: cat, count });
@@ -192,7 +192,6 @@ export class ProjectsComponent implements OnInit {
       'All': '🎯',
       'Angular': '🅰️',
       'React': '⚛️',
-      'Vue': '💚',
       'PHP': '🐘',
       'Node.js': '🟢',
       'Full-stack': '🔄',
